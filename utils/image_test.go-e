@@ -12,30 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package network
+package utils
 
 import (
-	"github.com/pangintama/tools/utils"
+	"path/filepath"
+	"runtime"
+	"testing"
 
-	"github.com/OpenIMSDK/protocol/constant"
+	"github.com/stretchr/testify/assert"
 )
 
-func GetRpcRegisterIP(configIP string) (string, error) {
-	registerIP := configIP
-	if registerIP == "" {
-		ip, err := utils.GetLocalIP()
-		if err != nil {
-			return "", err
-		}
-		registerIP = ip
-	}
-	return registerIP, nil
-}
+var (
+	_, b, _, _ = runtime.Caller(0)
+	// Root folder of this project
+	Root = filepath.Join(filepath.Dir(b), "../..")
+)
 
-func GetListenIP(configIP string) string {
-	if configIP == "" {
-		return constant.LocalHost
-	} else {
-		return configIP
-	}
+func Test_GenSmallImage(t *testing.T) {
+	println(Root)
+	err := GenSmallImage(Root+"/docs/open-im-logo.png", Root+"/out-test/open-im-logo-test.png")
+	assert.Nil(t, err)
+
+	err = GenSmallImage(Root+"/docs/open-im-logo.png", "out-test/open-im-logo-test.png")
+	assert.Nil(t, err)
+
+	err = GenSmallImage(Root+"/docs/Architecture.jpg", "out-test/Architecture-test.jpg")
+	assert.Nil(t, err)
 }

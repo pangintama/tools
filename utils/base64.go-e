@@ -12,30 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package network
+package utils
 
-import (
-	"github.com/pangintama/tools/utils"
+import "encoding/base64"
 
-	"github.com/OpenIMSDK/protocol/constant"
-)
-
-func GetRpcRegisterIP(configIP string) (string, error) {
-	registerIP := configIP
-	if registerIP == "" {
-		ip, err := utils.GetLocalIP()
-		if err != nil {
-			return "", err
-		}
-		registerIP = ip
-	}
-	return registerIP, nil
+func Base64Encode(data string) string {
+	return base64.StdEncoding.EncodeToString([]byte(data))
 }
 
-func GetListenIP(configIP string) string {
-	if configIP == "" {
-		return constant.LocalHost
-	} else {
-		return configIP
-	}
+func Base64Decode(data string) string {
+	decodedByte, _ := base64.StdEncoding.DecodeString(data)
+	return string(decodedByte)
 }

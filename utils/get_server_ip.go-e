@@ -12,30 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package network
+package utils
 
 import (
-	"github.com/pangintama/tools/utils"
-
-	"github.com/OpenIMSDK/protocol/constant"
+	"errors"
+	"net"
 )
 
-func GetRpcRegisterIP(configIP string) (string, error) {
-	registerIP := configIP
-	if registerIP == "" {
-		ip, err := utils.GetLocalIP()
-		if err != nil {
-			return "", err
-		}
-		registerIP = ip
-	}
-	return registerIP, nil
-}
+var ServerIP = ""
 
-func GetListenIP(configIP string) string {
-	if configIP == "" {
-		return constant.LocalHost
-	} else {
-		return configIP
+func GetLocalIP() (string, error) {
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		return "", err
 	}
+	for _, address := range addrs {
+
+		if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+			if ipnet.IP.To4() != nil {
+				return ipnet.IP.String(), nil
+			}
+		}
+	}
+
+	return "", errors.New("no ip")
 }

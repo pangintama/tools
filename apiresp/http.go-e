@@ -12,30 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package network
+package apiresp
 
 import (
-	"github.com/pangintama/tools/utils"
-
-	"github.com/OpenIMSDK/protocol/constant"
+	"encoding/json"
+	"net/http"
 )
 
-func GetRpcRegisterIP(configIP string) (string, error) {
-	registerIP := configIP
-	if registerIP == "" {
-		ip, err := utils.GetLocalIP()
-		if err != nil {
-			return "", err
-		}
-		registerIP = ip
+func httpJson(w http.ResponseWriter, data any) {
+	body, err := json.Marshal(data)
+	if err != nil {
+		http.Error(w, "json marshal error: "+err.Error(), http.StatusInternalServerError)
+		return
 	}
-	return registerIP, nil
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	_, _ = w.Write(body)
 }
 
-func GetListenIP(configIP string) string {
-	if configIP == "" {
-		return constant.LocalHost
-	} else {
-		return configIP
-	}
+func HttpError(w http.ResponseWriter, err error) {
+	httpJson(w, ParseError(err))
+}
+
+func HttpSuccess(w http.ResponseWriter, data any) {
+	httpJson(w, ApiSuccess(data))
 }

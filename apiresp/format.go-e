@@ -12,30 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package network
+package apiresp
 
-import (
-	"github.com/pangintama/tools/utils"
-
-	"github.com/OpenIMSDK/protocol/constant"
-)
-
-func GetRpcRegisterIP(configIP string) (string, error) {
-	registerIP := configIP
-	if registerIP == "" {
-		ip, err := utils.GetLocalIP()
-		if err != nil {
-			return "", err
-		}
-		registerIP = ip
-	}
-	return registerIP, nil
-}
-
-func GetListenIP(configIP string) string {
-	if configIP == "" {
-		return constant.LocalHost
-	} else {
-		return configIP
-	}
+type ApiFormat interface {
+	ApiFormat()
 }

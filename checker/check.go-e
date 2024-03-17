@@ -12,30 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package network
+package checker
 
-import (
-	"github.com/pangintama/tools/utils"
+import "github.com/OpenIMSDK/tools/errs"
 
-	"github.com/OpenIMSDK/protocol/constant"
-)
-
-func GetRpcRegisterIP(configIP string) (string, error) {
-	registerIP := configIP
-	if registerIP == "" {
-		ip, err := utils.GetLocalIP()
-		if err != nil {
-			return "", err
-		}
-		registerIP = ip
-	}
-	return registerIP, nil
+type Checker interface {
+	Check() error
 }
 
-func GetListenIP(configIP string) string {
-	if configIP == "" {
-		return constant.LocalHost
-	} else {
-		return configIP
+func Validate(args any) error {
+	if checker, ok := args.(Checker); ok {
+		if err := checker.Check(); err != nil {
+			if _, ok := errs.Unwrap(err).(errs.CodeError); ok {
+				return err
+			}
+			return errs.ErrArgs.Wrap(err.Error())
+		}
 	}
+	return nil
 }

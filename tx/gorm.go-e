@@ -12,30 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package network
+package tx
 
 import (
-	"github.com/pangintama/tools/utils"
-
-	"github.com/OpenIMSDK/protocol/constant"
+	"gorm.io/gorm"
 )
 
-func GetRpcRegisterIP(configIP string) (string, error) {
-	registerIP := configIP
-	if registerIP == "" {
-		ip, err := utils.GetLocalIP()
-		if err != nil {
-			return "", err
-		}
-		registerIP = ip
-	}
-	return registerIP, nil
+func NewGorm(db *gorm.DB) Tx {
+	return &_Gorm{tx: db}
 }
 
-func GetListenIP(configIP string) string {
-	if configIP == "" {
-		return constant.LocalHost
-	} else {
-		return configIP
-	}
+type _Gorm struct {
+	tx *gorm.DB
+}
+
+func (g *_Gorm) Transaction(fn func(tx any) error) error {
+	return g.tx.Transaction(func(tx *gorm.DB) error {
+		return fn(tx)
+	})
 }

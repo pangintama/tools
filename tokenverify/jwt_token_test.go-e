@@ -12,30 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package network
+package tokenverify
 
 import (
-	"github.com/pangintama/tools/utils"
+	"testing"
+
+	"github.com/golang-jwt/jwt/v4"
 
 	"github.com/OpenIMSDK/protocol/constant"
 )
 
-func GetRpcRegisterIP(configIP string) (string, error) {
-	registerIP := configIP
-	if registerIP == "" {
-		ip, err := utils.GetLocalIP()
-		if err != nil {
-			return "", err
-		}
-		registerIP = ip
+var secret = "OpenIM_server"
+
+func Test_ParseToken(t *testing.T) {
+	claims1 := BuildClaims("123456", constant.AndroidPadPlatformID, 10)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims1)
+	tokenString, err := token.SignedString([]byte(secret))
+	if err != nil {
+		t.Fatal(err)
 	}
-	return registerIP, nil
+	claim2, err := GetClaimFromToken(tokenString, secretFun())
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(claim2)
 }
 
-func GetListenIP(configIP string) string {
-	if configIP == "" {
-		return constant.LocalHost
-	} else {
-		return configIP
+func secretFun() jwt.Keyfunc {
+	return func(token *jwt.Token) (interface{}, error) {
+		return []byte(secret), nil
 	}
 }

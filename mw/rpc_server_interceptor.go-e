@@ -17,7 +17,7 @@ package mw
 import (
 	"context"
 	"fmt"
-	"github.com/pangintama/tools/checker"
+	"github.com/OpenIMSDK/tools/checker"
 	"math"
 
 	"github.com/OpenIMSDK/protocol/constant"
@@ -28,9 +28,9 @@ import (
 	"google.golang.org/grpc/status"
 
 	"github.com/OpenIMSDK/protocol/errinfo"
-	"github.com/pangintama/tools/errs"
-	"github.com/pangintama/tools/log"
-	"github.com/pangintama/tools/mw/specialerror"
+	"github.com/OpenIMSDK/tools/errs"
+	"github.com/OpenIMSDK/tools/log"
+	"github.com/OpenIMSDK/tools/mw/specialerror"
 )
 
 func rpcString(v interface{}) string {

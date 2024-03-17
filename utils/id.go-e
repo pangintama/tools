@@ -12,30 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package network
+package utils
 
 import (
-	"github.com/pangintama/tools/utils"
-
-	"github.com/OpenIMSDK/protocol/constant"
+	"github.com/bwmarrin/snowflake"
 )
 
-func GetRpcRegisterIP(configIP string) (string, error) {
-	registerIP := configIP
-	if registerIP == "" {
-		ip, err := utils.GetLocalIP()
-		if err != nil {
-			return "", err
-		}
-		registerIP = ip
+func init() {
+	var err error
+	idGenerator, err = snowflake.NewNode(getNodeNum())
+	if err != nil {
+		panic(err)
 	}
-	return registerIP, nil
 }
 
-func GetListenIP(configIP string) string {
-	if configIP == "" {
-		return constant.LocalHost
-	} else {
-		return configIP
-	}
+func getNodeNum() int64 {
+	return 1
+}
+
+var idGenerator *snowflake.Node
+
+func GenID() string {
+	return idGenerator.Generate().String()
+}
+
+func GenIDs(count int) []string {
+	//impl
+	return []string{}
 }

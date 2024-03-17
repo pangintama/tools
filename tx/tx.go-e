@@ -12,30 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package network
+package tx
 
-import (
-	"github.com/pangintama/tools/utils"
+import "context"
 
-	"github.com/OpenIMSDK/protocol/constant"
-)
-
-func GetRpcRegisterIP(configIP string) (string, error) {
-	registerIP := configIP
-	if registerIP == "" {
-		ip, err := utils.GetLocalIP()
-		if err != nil {
-			return "", err
-		}
-		registerIP = ip
-	}
-	return registerIP, nil
+type Tx interface {
+	Transaction(fn func(tx any) error) error
 }
 
-func GetListenIP(configIP string) string {
-	if configIP == "" {
-		return constant.LocalHost
-	} else {
-		return configIP
-	}
+type CtxTx interface {
+	Transaction(ctx context.Context, fn func(ctx context.Context) error) error
 }

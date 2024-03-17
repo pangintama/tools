@@ -17,14 +17,14 @@ package a2r
 import (
 	"context"
 
-	"github.com/pangintama/tools/checker"
+	"github.com/OpenIMSDK/tools/checker"
 
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
 
-	"github.com/pangintama/tools/apiresp"
-	"github.com/pangintama/tools/errs"
-	"github.com/pangintama/tools/log"
+	"github.com/OpenIMSDK/tools/apiresp"
+	"github.com/OpenIMSDK/tools/errs"
+	"github.com/OpenIMSDK/tools/log"
 )
 
 func Call[A, B, C any](

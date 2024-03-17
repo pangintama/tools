@@ -2,8 +2,8 @@ package mgoutil
 
 import (
 	"context"
-	"github.com/pangintama/tools/errs"
-	"github.com/pangintama/tools/pagination"
+	"github.com/OpenIMSDK/tools/errs"
+	"github.com/OpenIMSDK/tools/pagination"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )

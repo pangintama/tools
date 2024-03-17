@@ -21,8 +21,8 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/OpenIMSDK/protocol/constant"
-	"github.com/pangintama/tools/apiresp"
-	"github.com/pangintama/tools/errs"
+	"github.com/OpenIMSDK/tools/apiresp"
+	"github.com/OpenIMSDK/tools/errs"
 )
 
 // CorsHandler gin cross-domain configuration.

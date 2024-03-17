@@ -12,30 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package network
+package apiresp
 
 import (
-	"github.com/pangintama/tools/utils"
+	"net/http"
 
-	"github.com/OpenIMSDK/protocol/constant"
+	"github.com/gin-gonic/gin"
 )
 
-func GetRpcRegisterIP(configIP string) (string, error) {
-	registerIP := configIP
-	if registerIP == "" {
-		ip, err := utils.GetLocalIP()
-		if err != nil {
-			return "", err
-		}
-		registerIP = ip
-	}
-	return registerIP, nil
+func GinError(c *gin.Context, err error) {
+	c.JSON(http.StatusOK, ParseError(err))
 }
 
-func GetListenIP(configIP string) string {
-	if configIP == "" {
-		return constant.LocalHost
-	} else {
-		return configIP
-	}
+func GinSuccess(c *gin.Context, data any) {
+	c.JSON(http.StatusOK, ApiSuccess(data))
 }

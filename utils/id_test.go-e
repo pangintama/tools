@@ -12,30 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package network
+package utils
 
-import (
-	"github.com/pangintama/tools/utils"
+import "testing"
 
-	"github.com/OpenIMSDK/protocol/constant"
-)
-
-func GetRpcRegisterIP(configIP string) (string, error) {
-	registerIP := configIP
-	if registerIP == "" {
-		ip, err := utils.GetLocalIP()
-		if err != nil {
-			return "", err
+func TestGenID(t *testing.T) {
+	m := map[string]struct{}{}
+	for i := 0; i < 2000; i++ {
+		got := GenID()
+		if _, ok := m[got]; !ok {
+			m[got] = struct{}{}
+		} else {
+			t.Error("id generate error", got)
 		}
-		registerIP = ip
-	}
-	return registerIP, nil
-}
-
-func GetListenIP(configIP string) string {
-	if configIP == "" {
-		return constant.LocalHost
-	} else {
-		return configIP
 	}
 }

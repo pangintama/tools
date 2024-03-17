@@ -12,30 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package network
+package utils
 
 import (
-	"github.com/pangintama/tools/utils"
+	"testing"
 
-	"github.com/OpenIMSDK/protocol/constant"
+	"github.com/stretchr/testify/assert"
 )
 
-func GetRpcRegisterIP(configIP string) (string, error) {
-	registerIP := configIP
-	if registerIP == "" {
-		ip, err := utils.GetLocalIP()
-		if err != nil {
-			return "", err
-		}
-		registerIP = ip
-	}
-	return registerIP, nil
-}
+func Test_Md5(t *testing.T) {
+	result := Md5("go")
+	assert.Equal(t, result, "34d1f91fb2e514b8576fab1a75a89a6b")
 
-func GetListenIP(configIP string) string {
-	if configIP == "" {
-		return constant.LocalHost
-	} else {
-		return configIP
-	}
+	result2 := Md5("go")
+	assert.Equal(t, result, result2)
 }

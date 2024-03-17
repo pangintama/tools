@@ -12,30 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package network
+package log
 
 import (
-	"github.com/pangintama/tools/utils"
-
-	"github.com/OpenIMSDK/protocol/constant"
+	"context"
+	"fmt"
 )
 
-func GetRpcRegisterIP(configIP string) (string, error) {
-	registerIP := configIP
-	if registerIP == "" {
-		ip, err := utils.GetLocalIP()
-		if err != nil {
-			return "", err
-		}
-		registerIP = ip
-	}
-	return registerIP, nil
+type ZkLogger struct{}
+
+func NewZkLogger() *ZkLogger {
+	return &ZkLogger{}
 }
 
-func GetListenIP(configIP string) string {
-	if configIP == "" {
-		return constant.LocalHost
-	} else {
-		return configIP
-	}
+func (l *ZkLogger) Printf(format string, a ...interface{}) {
+	ZInfo(context.Background(), "zookeeper output", "msg", fmt.Sprintf(format, a...))
 }

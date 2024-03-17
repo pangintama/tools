@@ -12,30 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package network
+package zookeeper
 
 import (
-	"github.com/pangintama/tools/utils"
-
-	"github.com/OpenIMSDK/protocol/constant"
+	"github.com/go-zookeeper/zk"
 )
 
-func GetRpcRegisterIP(configIP string) (string, error) {
-	registerIP := configIP
-	if registerIP == "" {
-		ip, err := utils.GetLocalIP()
-		if err != nil {
-			return "", err
-		}
-		registerIP = ip
+func (s *ZkClient) RegisterConf2Registry(key string, conf []byte) error {
+	exists, _, err := s.conn.Exists(s.getPath(key))
+	if err != nil {
+		return err
 	}
-	return registerIP, nil
+	if exists {
+		if err := s.conn.Delete(s.getPath(key), 0); err != nil {
+			return err
+		}
+	}
+	_, err = s.conn.Create(s.getPath(key), conf, 0, zk.WorldACL(zk.PermAll))
+	if err != zk.ErrNodeExists {
+		return err
+	}
+	return nil
 }
 
-func GetListenIP(configIP string) string {
-	if configIP == "" {
-		return constant.LocalHost
-	} else {
-		return configIP
-	}
+func (s *ZkClient) GetConfFromRegistry(key string) ([]byte, error) {
+	bytes, _, err := s.conn.Get(s.getPath(key))
+	return bytes, err
 }
