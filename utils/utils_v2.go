@@ -18,6 +18,7 @@ import (
 	"encoding/json"
 	"reflect"
 	"sort"
+	"fmt"
 )
 
 // SliceSub a中存在,b中不存在 (a-b)
@@ -177,6 +178,7 @@ func DuplicateAny[E any, K comparable](es []E, fn func(e E) K) bool {
 	for _, e := range es {
 		k := fn(e)
 		if _, ok := t[k]; ok {
+		    fmt.Printf("ooooooooo%v\n",ok)
 			return true
 		}
 		t[k] = struct{}{}
