@@ -1,4 +1,4 @@
-module github.com/OpenIMSDK/tools
+module github.com/pangintama/tools
 
 go 1.18
 
