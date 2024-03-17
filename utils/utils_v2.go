@@ -178,7 +178,7 @@ func DuplicateAny[E any, K comparable](es []E, fn func(e E) K) bool {
 	for _, e := range es {
 		k := fn(e)
 		if _, ok := t[k]; ok {
-		    fmt.Printf("ooooooooo%v\n",ok)
+		    fmt.Printf("ooooooooo%v\n",k)
 			return true
 		}
 		t[k] = struct{}{}
